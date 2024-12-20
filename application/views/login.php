@@ -81,7 +81,7 @@
 						?>
 						<form id="form1" action="portal.signintemplate.html" class="form-horizontal" method="post">
 							<div class="input-group mb-3">
-								<input value="testtest@yahoo.com" type="email" name="email" class="form-control" placeholder="jdelacruz@yahoo.com" autocomplete="off">
+								<input type="email" name="email" class="form-control" placeholder="jdelacruz@yahoo.com" autocomplete="off">
 								<input type="hidden" name="hidloc" class="form-control" >
 								<div class="input-group-append">
 									<div class="input-group-text">
@@ -89,7 +89,7 @@
 								</div>
 							</div>
 							<div class="input-group mb-3">
-								<input  value="123"  type="password" name="password"  class="form-control" placeholder="password" autocomplete="off">
+								<input  type="password" name="password"  class="form-control" placeholder="password" autocomplete="off">
 								<div class="input-group-append">
 									<div class="input-group-text">
 										<span class="fas fa-lock"></span></div>

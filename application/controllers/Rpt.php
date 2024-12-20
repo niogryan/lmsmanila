@@ -17,6 +17,12 @@ class rpt extends CI_Controller
 			$this->session->set_userdata('alert',  'Access Denied');
 			redirect('site/');
 		}
+
+		$userDetails = $this->system_model->getUserDetails($this->session->userdata('lmsmemberid'));	
+		if ($userDetails['isstrictmachineaccess'] == '1') {
+			$this->load->helper('custom_helper');
+			is_cookie_active();
+		}
 	
 		$this->data['accessmenu']=$this->tools_model->getuseraccessmenu($this->session->userdata('roleid'));
 		$this->data['selectedsearchtype']=null;

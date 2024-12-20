@@ -17,7 +17,7 @@ class customer extends CI_Controller
 			redirect('site/');
 		}
 		$this->data['accessmenu']=$this->tools_model->getuseraccessmenu($this->session->userdata('roleid'));
-	$this->data['selectedsearchtype']=null;
+		$this->data['selectedsearchtype']=null;
 	}
 
 	public function index()

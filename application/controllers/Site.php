@@ -408,38 +408,43 @@ class site extends CI_Controller
 	}
 
 	private function doCookiesCreation($userid){
-		$pendingCookies = $this->Usercookies_model->getPendingCookies( $userid);
-		if (!$pendingCookies){
-			$cookieValue = bin2hex(random_bytes(16)); // Unique cookie value
-			$userAgent = $_SERVER['HTTP_USER_AGENT'];
-			$remoteAddress = $_SERVER['REMOTE_ADDR'];
-			$clientSignature = sha1($userAgent . $remoteAddress); // User-Agent + IP
-			$cookieValue = $cookieValue. $clientSignature;
+		try{
+			$pendingCookies = $this->Usercookies_model->getPendingCookies( $userid);
+			if (!$pendingCookies){
+				$cookieValue = bin2hex(random_bytes(16)); // Unique cookie value
+				$userAgent = $_SERVER['HTTP_USER_AGENT'];
+				$remoteAddress = $_SERVER['REMOTE_ADDR'];
+				$clientSignature = sha1($userAgent . $remoteAddress); // User-Agent + IP
+				$cookieValue = $cookieValue. $clientSignature;
 
-			$cookie = array(
-				'name'   => 'lms_user_cookie',
-				'value'  => $cookieValue,
-				'expire' => 31536000, // 1 year
-				'secure' => FALSE,
-				'httponly' => TRUE,
-			);
-			$this->input->set_cookie($cookie);
-
-			// Save cookie details in the database
-			$parameter = [
-				'user_id' 		=> $userid,
-				'cookie_value' 	=> $cookieValue,
-				'created_at' 	=> date('Y-m-d H:i:s'),
-				'status' 		=> 'Pending',
-				'expires_at' 	=> date('Y-m-d H:i:s', strtotime('+1 year')),
-				'user_agent'	=> $userAgent,
-				'ip_address'	=> $remoteAddress
-				];
-			$this->Usercookies_model->saveCookie($parameter);
-			return $cookieValue;
+				$cookie = array(
+					'name'   => 'lms_user_cookie',
+					'value'  => $cookieValue,
+					'expire' => 31536000, // 1 year
+					'secure' => FALSE,
+					'httponly' => TRUE,
+				);
+				$this->input->set_cookie($cookie);
+				// Save cookie details in the database
+				$parameter = [
+					'user_id' 		=> $userid,
+					'cookie_value' 	=> $cookieValue,
+					'created_at' 	=> date('Y-m-d H:i:s'),
+					'status' 		=> 'Pending',
+					'expires_at' 	=> date('Y-m-d H:i:s', strtotime('+1 year')),
+					'user_agent'	=> $userAgent,
+					'ip_address'	=> $remoteAddress
+					];
+				$this->Usercookies_model->saveCookie($parameter);
+				return $cookieValue;
+			}
+			else{
+				echo 'Clientside authentication pending. Please contact the administrator.';
+				die();
+			}
 		}
-		else{
-			echo 'Clientside authentication pending. Please contact the administrator.';
+		catch (Exception $e){
+			echo $e->getMessage();
 			die();
 		}
 	}

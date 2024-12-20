@@ -330,6 +330,7 @@
 					|| $accessmenu['toolsholidays']['isaccess']!='F'
 					|| $accessmenu['toolsroles']['isaccess']!='F'
 					|| $accessmenu['toolsuseracounts']['isaccess']!='F'
+					|| $accessmenu['usermachinevalidation']['isaccess']!='F'
 					)
 				{
 			
@@ -394,7 +395,15 @@
 										echo anchor('tools/useraccounts',' <i class="fas fa-users"></i> <p>User Accounts</p>','class="nav-link '.($submenu=='useraccounts' ? 'active' : null).'"');
 									}
 								?>
-							</li>	
+							</li>
+							
+							<li class="nav-item">	
+								<?php
+									if($accessmenu['toolsusermachinevalidation']['isaccess']!='F')
+									{
+										echo anchor('tools/usermachinevalidation',' <i class="fas fa-laptop-code"></i> <p>Users Machine Validation</p>','class="nav-link '.($submenu=='usermachinevalidation' ? 'active' : null).'"');
+									}
+								?>
 							<li class="nav-item">
 								<?php 
 									echo anchor('site/backup',' <i class="fas fa-file-download"></i> <p>Backup</p>','class="nav-link"');
