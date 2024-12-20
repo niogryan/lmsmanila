@@ -24,8 +24,6 @@ date_default_timezone_set('Asia/Manila');
 |
 */
 $config['base_url'] = 'http://localhost:8080/lmsmanila/';
-//$config['base_url'] = 'http://130.105.175.224/lms/';
-//$config['base_url'] = 'http://222.127.186.77/lms/';
 /*
 |--------------------------------------------------------------------------
 | Index File
