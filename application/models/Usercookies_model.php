@@ -31,28 +31,44 @@ class Usercookies_model extends CI_Model {
 
     public function getUserCookies($cookieID, $userID, $status)
     {
-   
-        $this->db->select('cookies.*, user.emailaddress, user.firstname, user.lastname');
-        $this->db->from('tbl_useraccounts_cookies cookies');
-        $this->db->join('tbl_user_accounts user', 'cookies.user_id = user.userid');
-        if ($cookieID != null) {
-            $this->db->where('cookies.usercookieid', $cookieID);
-        }
-
-        if ($userID != null) {
-            $this->db->where('cookies.user_id', $userID);
-        }
-
-        if ($status != null) {
-            if ($status == 'Others') {
-            $this->db->where_not_in('cookies.status', ['Pending', 'Active']);
-            } else {
-            $this->db->where('cookies.status', $status);
+        if ($status == 'Active') {
+            $this->db->select('cookies.*, user.emailaddress, user.firstname, user.lastname');
+            $this->db->from('tbl_useraccounts_cookies cookies');
+            $this->db->join('tbl_user_accounts user', 'cookies.user_id = user.userid');
+            if ($cookieID != null) {
+                $this->db->where('cookies.usercookieid', $cookieID);
             }
-        }
 
-        $this->db->order_by('cookies.usercookieid', 'desc');
-        $this->db->limit(5);
+            if ($userID != null) {
+                $this->db->where('cookies.user_id', $userID);
+            }
+
+            $this->db->where('cookies.status', $status);
+            $this->db->order_by('cookies.ip_address asc,cookies.usercookieid desc');
+        }
+        else{
+            $this->db->select('cookies.*, user.emailaddress, user.firstname, user.lastname');
+            $this->db->from('tbl_useraccounts_cookies cookies');
+            $this->db->join('tbl_user_accounts user', 'cookies.user_id = user.userid');
+            if ($cookieID != null) {
+                $this->db->where('cookies.usercookieid', $cookieID);
+            }
+
+            if ($userID != null) {
+                $this->db->where('cookies.user_id', $userID);
+            }
+
+            if ($status != null) {
+                if ($status == 'Others') {
+                $this->db->where_not_in('cookies.status', ['Pending', 'Active']);
+                } else {
+                $this->db->where('cookies.status', $status);
+                }
+            }
+
+            $this->db->order_by('cookies.usercookieid', 'desc');
+            $this->db->limit(5);
+        }
         return $this->db->get()->result_array();
     }
 

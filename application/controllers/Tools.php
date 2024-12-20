@@ -699,21 +699,7 @@ class tools extends CI_Controller
 			$this->session->set_userdata('alertgreen', 'success');
 			redirect('tools/userdetails/'.$this->data['param1'].'/'.$this->data['param2']);	
 		}
-		else if ($this->uri->segment(3) == 'cookie'){
-			if ($this->uri->segment(4)==1){
-				$this->Usercookies_model->updateCookieStatus($this->uri->segment(6),'Active');
-			}
-			else if ($this->uri->segment(4)==0){
-				$this->Usercookies_model->updateCookieStatus($this->uri->segment(6),'Unathorize');
-			}
-			else if ($this->uri->segment(4)==2){
-				$this->Usercookies_model->updateCookieStatus($this->uri->segment(6),'Expired');
-			}
-
-			redirect('tools/userdetails/'.$this->uri->segment(5).'/'.$this->mylibraries->encrypt('vu'.$this->uri->segment(5)));
-		}
-		else
-		{
+		else{
 			if($this->mylibraries->encrypt('vu'.$this->data['param1'])!=$this->data['param2'])
 			{
 				$this->session->set_userdata('alertred', $this->mylibraries->show_message('denied'));
@@ -728,11 +714,7 @@ class tools extends CI_Controller
 		$this->data['branches']=$this->tools_model->getbranches();
 		$this->data['userbranch']=$this->tools_model->getuseraccessbranches($this->data['param1']);
 		$this->data['userareas']=$this->tools_model->getuseraccessareas($this->data['param1']);
-		$this->data['cookiesPending']=$this->Usercookies_model->getUserCookies(null,$this->data['param1'],'Pending');
-		$this->data['cookiesActive']=$this->Usercookies_model->getUserCookies(null,$this->data['param1'],'Active');
-		$this->data['cookiesOthers']=$this->Usercookies_model->getUserCookies(null,$this->data['param1'],'Others');
-		
-		
+
 		$this->data['mainmenu']='tools';
 		$this->data['submenu']='useraccounts';
 		$this->load->view('templates/header',$this->data);
@@ -742,6 +724,24 @@ class tools extends CI_Controller
 
 	public function usermachinevalidation(){
 
+		if ($this->uri->segment(3) == 'cookie'){
+			if ($this->uri->segment(4)==1){
+				$this->Usercookies_model->updateCookieStatus($this->uri->segment(5),'Active');
+			}
+			else if ($this->uri->segment(4)==0){
+				$this->Usercookies_model->updateCookieStatus($this->uri->segment(5),'Unathorize');
+			}
+			else if ($this->uri->segment(4)==2){
+				$this->Usercookies_model->updateCookieStatus($this->uri->segment(5),'Expired');
+			}
+			redirect('tools/usermachinevalidation/');
+		}
+
+		$this->data['cookiesPending']=$this->Usercookies_model->getUserCookies(null,null,'Pending');
+		$this->data['cookiesActive']=$this->Usercookies_model->getUserCookies(null,null,'Active');
+		$this->data['cookiesUnathorize']=$this->Usercookies_model->getUserCookies(null,null,'Unathorize');
+		$this->data['cookiesOthers']=$this->Usercookies_model->getUserCookies(null,null,'Expired');
+		
 		$this->data['mainmenu']='tools';
 		$this->data['submenu']='usermachinevalidation';
 		$this->load->view('templates/header',$this->data);
